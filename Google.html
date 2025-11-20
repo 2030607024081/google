@@ -7,15 +7,16 @@
     <!-- Tailwind CSS (Google風デザイン用) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /*
+         * 基本スタイル設定
+         */
         body { 
-            font-family: 'Inter', sans-serif; 
             background-color: #ffffff; 
-            /* フッター分のスペースを確保 */
-            padding-bottom: 50px; 
             min-height: 100vh;
             position: relative; /* フッター固定のため */
         }
-        /* アイコンのコンテナ */
+
+        /* アイコンのコンテナ (ホバーエフェクトを含む) */
         .icon-placeholder {
             width: 24px;
             height: 24px;
@@ -30,136 +31,135 @@
             /* Google風にホバー時に少し薄いグレーの背景 */
             background-color: rgba(0, 0, 0, 0.05);
         }
-        /* フッターのスタイル */
+        
+        /* ------------------------- */
+        /* 検索バーのスタイル */
+        /* ------------------------- */
+        #searchBar {
+            /* 常に薄い影を適用 (shadow-sm 相当) */
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.2s;
+            /* 💡 修正点: アイコンが収まるように垂直方向のパディングを増やし、全体を調整 */
+            padding: 8px 10px; /* Tailwind p-2.5 と p-3 の間くらい */
+        }
+        #searchBar:hover, #searchBar:focus-within {
+             /* フォーカス時に近い、均一で拡散した影 */
+            box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
+        }
+
+        /* 検索バーの入力ボックスの調整 */
+        #searchInput {
+            font-size: 16px; 
+            /* モバイルでタップしやすくなるように高さを微調整 */
+            padding-top: 1px; 
+            padding-bottom: 1px;
+        }
+
+        /* ------------------------- */
+        /* フッターのスタイル (レスポンシブ対応) */
+        /* ------------------------- */
         .google-footer {
-            /* 画面下部に固定 */
             position: fixed;
             bottom: 0;
             width: 100%;
             background-color: #f2f2f2;
             border-top: 1px solid #dadce0;
-            padding: 0;
             color: #70757a;
-            font-size: 14px;
+            font-size: 13px; /* Google標準のフォントサイズ */
             z-index: 10;
+        }
+        /* 地域の表示部分 */
+        .footer-region {
+            padding: 15px 30px; 
+            border-bottom: 1px solid #dadce0;
+        }
+        /* リンクコンテナ */
+        .footer-links-container {
+            display: flex;
+            flex-direction: column; 
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 0 30px;
+        }
+        @media (min-width: 640px) { /* sm:ブレークポイント以上 */
+            .footer-links-container {
+                flex-direction: row;
+                align-items: center;
+            }
         }
         .google-footer a {
             color: #70757a;
-            padding: 15px;
+            /* 💡 修正点: リンクのパディングを調整し、ホバー/タップ領域を適度なサイズに縮小 */
+            padding: 15px; /* タップ領域を確保しつつ、不必要に大きくしない */
+            display: block; 
+        }
+        /* モバイルではリンクの左右パディングを狭く調整 */
+        .footer-link-group a {
+            padding: 10px 15px;
+        }
+        /* デスクトップでは左右に十分なパディングを確保 */
+        @media (min-width: 640px) {
+            .footer-link-group a {
+                padding: 15px 15px;
+            }
         }
         .google-footer a:hover {
             text-decoration: underline;
         }
-        /* Google風トップバーのリンクスタイル */
-        .MV3Tnb {
-            padding: 5px 10px;
-            font-size: 13px; /* Google.comのフォントサイズに寄せる */
-            color: #000000DE; /* 濃いめの灰色 */
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .MV3Tnb:hover {
-            text-decoration: underline;
-        }
-        /* Gmailリンク */
-        .gb_Z {
-            padding: 5px 10px;
-            font-size: 13px;
-            color: #000000DE; 
-            text-decoration: none;
-        }
-        .gb_Z:hover {
-            text-decoration: underline;
-        }
-        /* ログインボタンのスタイル (灰色で無効化) */
-        .gb_A {
-            background-color: #a0a0a0; /* 控えめな灰色 */
-            color: white;
-            padding: 9px 15px;
-            border-radius: 6px; 
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-            margin-left: 10px;
-            transition: background-color 0.15s, box-shadow 0.15s;
-            cursor: default; 
-        }
-        .gb_A:hover {
-            background-color: #8f8f8f; 
-            box-shadow: none;
-        }
-        /* 検索バーのテキストサイズ */
-        #searchInput {
-            font-size: 16px; 
-        }
-
-        /* 常に薄い影を適用 (shadow-sm 相当) */
-        #searchBar {
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm のデフォルト */
-            transition: none; /* アニメーションを削除 */
-        }
-
-        /* 影を、検索バー全体を囲む均一で拡散した影に調整 */
-        #searchBar:hover, #searchBar:focus-within {
-             /* Google検索バーのフォーカス時に近い、均一で拡散した影 */
-            box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
+        .footer-link-group {
+            display: flex;
+            flex-wrap: wrap;
         }
     </style>
 </head>
-<!-- モバイルで検索バーが上に寄りすぎないよう、sm:pt-24で調整 -->
-<body class="flex flex-col items-center pt-16 sm:pt-24 min-h-screen">
 
+<!-- モバイルでのロゴと検索バーの位置を調整 -->
+<body class="flex flex-col items-center pt-24 min-h-screen pb-40"> 
+    
     <!-- Google風トップヘッダー（ナビゲーションバー） -->
-    <header class="absolute top-0 w-full p-4 flex justify-between items-center text-sm">
+    <header class="absolute top-0 w-full p-2 sm:p-4 flex justify-end items-center text-sm">
         
-        <!-- 左側リンク群 -->
-        <div class="hidden sm:flex space-x-2">
-            <a class="MV3Tnb" href="https://about.google/?fg=1" target="_blank">Googleについて</a>
-            <a class="MV3Tnb" href="https://store.google.com/JP" target="_blank">ストア</a>
-        </div>
-        
-        <!-- 右側リンク群 (Gmail, ログイン) -->
-        <div class="flex items-center">
+        <!-- 右側リンク群 (Gmail, アプリアイコン, プロフィールアイコン) -->
+        <div class="flex items-center space-x-2 mr-2">
             <!-- Gmail リンク -->
-            <a class="gb_Z" aria-label="Gmail " href="https://mail.google.com/mail/" target="_blank">Gmail</a>
+            <a class="text-xs sm:text-sm text-gray-800 hover:underline px-2 py-1" 
+               aria-label="Gmail " href="https://mail.google.com/mail/" target="_blank">Gmail</a>
             
-            <!-- ログインボタン (灰色で無効化 - ブラウザ標準ツールチップを表示) -->
-            <a 
-                class="gb_A" 
-                href="#" 
-                id="loginButton"
-                onclick="return false;" 
-                aria-label="ログイン機能は無効です"
-                title="現在ログインできません"
-            >
-                <span class="gb_U">ログイン</span>
+            <!-- Googleアプリ (九点メニューアイコン) - ダミー -->
+            <a href="#" class="icon-placeholder p-2" title="Googleアプリ" onclick="return false;">
+                <!-- SVG: Google Apps Icon (24x24) -->
+                <svg viewBox="0 0 24 24" class="w-6 h-6" style="fill:#5f6368">
+                    <path d="M6,8c1.1,0,2-0.9,2-2s-0.9-2-2-2S4,4.9,4,6S4.9,8,6,8z M12,20c1.1,0,2-0.9,2-2s-0.9-2-2-2s-2,0.9-2,2S10.9,20,12,20z M6,20c1.1,0,2-0.9,2-2s-0.9-2-2-2S4,16.9,4,18S4.9,20,6,20z M6,14c1.1,0,2-0.9,2-2s-0.9-2-2-2S4,10.9,4,12S4.9,14,6,14z M18,14c1.1,0,2-0.9,2-2s-0.9-2-2-2s-2,0.9-2,2S16.9,14,18,14z M12,14c1.1,0,2-0.9,2-2s-0.9-2-2-2s-2,0.9-2,2S10.9,14,12,14z M18,8c1.1,0,2-0.9,2-2s-0.9-2-2-2s-2,0.9-2,2S16.9,8,18,8z M12,8c1.1,0,2-0.9,2-2s-0.9-2-2-2s-2,0.9-2,2S10.9,8,12,8z M18,20c1.1,0,2-0.9,2-2s-0.9-2-2-2s-2,0.9-2,2S16.9,20,18,20z"></path>
+                </svg>
+            </a>
+
+            <!-- プロフィールアイコン (ダミー) - ブラウザ標準ツールチップを表示 -->
+            <a href="#" class="icon-placeholder" title="現在ログインできません" onclick="return false;">
+                 <!-- ダミーの青い丸いアイコンをCSSで表現 -->
+                <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-semibold cursor-default">M</div>
             </a>
         </div>
     </header>
     <!-- END: Top Header -->
 
-    <!-- GoogleロゴのSVG -->
-    <div class="o3j99 LLD4me yr19Zb LS8OJ mb-8 sm:mb-10">
-        <style>.LS8OJ{display:flex;flex-direction:column;align-items:center}.k1zIA{height:100%;margin-top:auto}</style>
-        <div class="k1zIA rSk4se">
-            <style>.rSk4se{max-height:92px;position:relative}.lnXdpd{max-height:100%;max-width:100%;object-fit:contain;object-position:center bottom;width:auto}</style>
-            <svg class="lnXdpd" aria-label="Google" height="92" role="img" viewBox="0 0 272 92" width="272" xmlns="http://www.w3.org/2000/svg">
-                <path d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#EA4335"></path>
-                <path d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#FBBC05"></path>
-                <path d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z" fill="#4285F4"></path>
-                <path d="M225 3v65h-9.5V3h9.5z" fill="#34A853"></path>
-                <path d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z" fill="#EA4335"></path>
-                <path d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 53.89.36 34.91.36 15.93 16.32.47 35.3.47c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.65l-22.49.01z" fill="#4285F4"></path>
-            </svg>
-        </div>
+    <!-- GoogleロゴのSVG (モバイルでも適切なマージンを取る) -->
+    <div class="mb-6 sm:mb-10 mt-10">
+        <svg class="lnXdpd" aria-label="Google" height="92" role="img" viewBox="0 0 272 92" width="272" xmlns="http://www.w3.org/2000/svg">
+            <path d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#EA4335"></path>
+            <path d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#FBBC05"></path>
+            <path d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z" fill="#4285F4"></path>
+            <path d="M225 3v65h-9.5V3h9.5z" fill="#34A853"></path>
+            <path d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z" fill="#EA4335"></path>
+            <path d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 53.89.36 34.91.36 15.93 16.32.47 35.3.47c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.65l-22.49.01z" fill="#4285F4"></path>
+        </svg>
     </div>
     <!-- END: Googleロゴ -->
 
-    <!-- 検索バーの再現 (レスポンシブ対応: モバイルでは横パディングを小さく) -->
-    <div class="w-full max-w-xl mx-auto px-4">
+    <!-- 検索バーの再現 (レスポンシブ対応) -->
+    <div class="w-full max-w-xl mx-auto px-5 sm:px-4"> 
         <div 
             id="searchBar" 
-            class="flex items-center border border-gray-200 rounded-full p-3 bg-white focus-within:border-transparent"
+            class="flex items-center border border-gray-200 rounded-full bg-white focus-within:border-transparent" 
         >
             
             <!-- 検索アイコン -->
@@ -178,15 +178,15 @@
                 autocomplete="off"
             >
 
-            <!-- マイクアイコン -->
-            <a href="#" class="icon-placeholder mx-1" title="音声検索" onclick="return false;">
+            <!-- マイクアイコン (マージンを削除し、CSSに制御を集中) -->
+            <a href="#" class="icon-placeholder" title="音声検索 (ダミー)" onclick="return false;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 -960 960 960">
                     <path fill="#474747" d="M480-400q-50 0-85-35t-35-85v-240q0-50 35-85t85-35q50 0 85 35t35 85v240q0 50-35 85t-85 35Zm-40 280v-123q-104-14-172-93t-68-184h80q0 83 58.5 141.5T480-320q83 0 141.5-58.5T680-520h80q0 105-68 184t-172 93v123h-80Z"/>
                 </svg>
             </a>
 
-            <!-- レンズアイコン -->
-            <a href="#" class="icon-placeholder ml-1 mr-2" title="Google Lens" onclick="return false;">
+            <!-- レンズアイコン (右側にマージンを追加し、CSSに制御を集中) -->
+            <a href="#" class="icon-placeholder mr-2" title="Google Lens (ダミー)" onclick="return false;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 -960 960 960">
                     <path fill="#474747" d="M480-320q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35Zm240 160q-33 0-56.5-23.5T640-240q0-33 23.5-56.5T720-320q33 0 56.5 23.5T800-240q0 33-23.5 56.5T720-160Zm-440 40q-66 0-113-47t-47-113v-80h80v80q0 33 23.5 56.5T280-200h200v80H280Zm480-320v-160q0-33-23.5-56.5T680-680H280q-33 0-56.5 23.5T200-600v120h-80v-120q0-66 47-113t113-47h80l40-80h160l40 80h80q66 0 113 47t47 113v160h-80Z"/>
                 </svg>
@@ -197,31 +197,31 @@
     <!-- ページフッター (Google風) -->
     <footer class="google-footer">
         <!-- 地域の表示 -->
-        <div class="px-8 py-3 border-b border-gray-300">
+        <div class="footer-region">
             日本
         </div>
         
-        <!-- リンク群 (レスポンシブ対応済み: flex-wrap, flex-col sm:flex-row) -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center px-8 py-3">
+        <!-- リンク群 -->
+        <div class="footer-links-container">
             <!-- 左側のリンク -->
-            <div class="flex flex-wrap">
-                <a href="https://www.google.com/intl/ja_jp/ads/" target="_blank" class="py-2 px-4">広告</a>
-                <a href="https://www.google.com/services/" target="_blank" class="py-2 px-4">ビジネス</a>
-                <a href="https://google.com/search/howsearchworks/" target="_blank" class="py-2 px-4">検索の仕組み</a>
+            <div class="footer-link-group">
+                <a href="https://www.google.com/intl/ja_jp/ads/" target="_blank">広告</a>
+                <a href="https://www.google.com/services/" target="_blank">ビジネス</a>
+                <a href="https://google.com/search/howsearchworks/" target="_blank">検索の仕組み</a>
             </div>
             
             <!-- 右側のリンク -->
-            <div class="flex flex-wrap mt-2 sm:mt-0">
-                <a href="https://policies.google.com/privacy" target="_blank" class="py-2 px-4">プライバシー</a>
-                <a href="https://policies.google.com/terms" target="_blank" class="py-2 px-4">規約</a>
-                <a href="#" class="py-2 px-4" onclick="return false;" title="この設定はダミーです">設定</a>
+            <div class="footer-link-group">
+                <a href="https://policies.google.com/privacy" target="_blank">プライバシー</a>
+                <a href="https://policies.google.com/terms" target="_blank">規約</a>
+                <a href="#" onclick="return false;" title="この設定はダミーです">設定</a>
             </div>
         </div>
     </footer>
 
     <!-- JavaScriptセクション -->
     <script>
-        // 🚨 WebアプリURL (ご提供いただいた最新URL) 🚨
+        // 🚨 WebアプリURL 🚨
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzEdtKOmg6rRBlg0Bw99AeYGfMdtsgRZjLwKtWW0jAR3HMxy0B22yA_AlVC2mRWRheUHA/exec"; 
 
         /**
@@ -261,9 +261,8 @@
                 }
 
             } catch (error) {
-                // ローカル実行の場合のヒントメッセージ（Web公開時には影響なし）
                 console.error('❌ 致命的な送信エラー: 通信に失敗しました。', error);
-                console.warn('💡 ヒント: ローカルファイル (file://) から実行している場合、ブラウザのCORS制限により送信がブロックされている可能性が高いです。Webサーバー経由 (http://localhost:XXXX) またはGitHub Pagesのような公開URLからアクセスしてください。');
+                console.warn('💡 ヒント: ローカルファイル (file://) から実行している場合、CORS制限により送信がブロックされている可能性があります。');
             }
         }
 
@@ -272,7 +271,7 @@
         
         searchInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
-                event.preventDefault(); // デフォルトのEnter動作を停止
+                event.preventDefault(); 
                 const query = searchInput.value.trim();
 
                 if (query) {
@@ -282,21 +281,20 @@
                     // 2. 遷移先を決定: URL判定ロジック
                     let destinationUrl;
                     
-                    // 簡易的なURLチェック: http://またはhttps://で始まるか、またはスペースを含まずドットを含む文字列をURLとみなす
+                    // 簡易的なURLチェック
                     const urlRegex = /^(https?:\/\/.+)|(\S+\.\S+)$/i;
 
                     if (urlRegex.test(query)) {
-                        // URLとして開くために 'http://' がなければ追加
                         destinationUrl = (query.startsWith('http://') || query.startsWith('https://')) 
                                            ? query 
                                            : `http://${query}`;
                     } else {
-                        // 通常のGoogle検索
+                        // 通常のGoogle検索 (現在のタブで開く)
                         destinationUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
                     }
 
-                    // 新しいタブで開く
-                    window.open(destinationUrl, '_blank');
+                    // 現在のタブで開く
+                    window.location.href = destinationUrl;
                 } else {
                     console.log("検索内容が空のため、検索と送信をスキップしました。");
                 }
